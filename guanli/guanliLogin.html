@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理员登陆</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <script>
+    function jump(){
+      if (document.getElementById("kouling").value == "123") {
+        window.open("guanliLogin1.html");
+      }
+      else {
+        alert("管理员口令不正确，请重新输入");
+      }
+    }123
+  </script>
+  <style>
+    .container{
+      width: 290px;
+      margin-top: 190px;
+    }
+  </style>
+</head>
+
+<body style="background-image:url(../imgs/4.jpg);background-repeat:no-repeat;background-attachment:fixed;background-size:cover">
+  <div class="container">
+    <div class="panel panel-primary" id="login">
+      <div class="panel-heading">
+        登陆
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label for="kouling">请输入管理员口令</label>
+          <input type="text" name="username" class="form-control" id="kouling">
+        </div>
+        <button class="btn btn-primary pull-right" id="btn1" onclick="jump()">确认</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

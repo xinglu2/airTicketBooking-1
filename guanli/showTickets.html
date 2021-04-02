@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>获取所有车票信息</title>
+  <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <script src="../myjs/ajax.js"></script>
+  <script>
+  	window.onload = function(){
+  		var oBtn = document.getElementById("btn1");
+  		var oT1 = document.getElementById("t1");
+  		oBtn.onclick = function(){
+  			$ajax({
+  				method:"get",
+  				url:"showTickets.php",
+  				success:function(result){
+  					// alert(result);
+  					var arr = JSON.parse(result);
+  					var str = ``;
+  					for(var i=0;i<arr.length;i++){
+  						str += `<tr>
+                      <td>${arr[i].ID}</td>
+                      <td>${arr[i].出发地}</td>
+                      <td>${arr[i].目的地}</td>
+                      <td>${arr[i].出发日期}</td>
+                      <td>${arr[i].起飞时间}</td>
+                      <td>${arr[i].到达时间}</td>
+                      <td>${arr[i].票价}</td>
+                      <td>${arr[i].机票类型}</td>
+                      <td>${arr[i].所属公司}</td>
+                      <td>${arr[i].航班号}</td>
+                      <td>${arr[i].备注}</td>
+                    </tr>`;
+  					}
+  					oT1.innerHTML = str;
+  				},
+  				error:function(msg){
+  					alert(msg);
+  				}
+  			})
+  		}
+  	}
+	</script>
+	<script>
+		
+	</script>
+</head>
+<body style="background-image:url(../imgs/biaoge.jpg);background-repeat:no-repeat;background-attachment:fixed;background-size:cover">
+  <div class="container">
+  		<div class="panel panel-primary">
+	  		 <div class="panel-heading">
+	  		 	<h3 class="panel-title">查看机票信息</h3>
+	  		 </div>
+	  		 <div class="panel-body">
+	  		 	<button type="button" class="btn btn-primary" id="btn1">获取所有机票信息</button>
+	  		 	<br>
+	  		 	<table class="table table-condensed table-hover table-bordered">
+	  		 		<thead>
+	  		 			<tr>
+	  		 				<td>ID</td>
+	  		 				<td>出发地</td>
+	  		 				<td>目的地</td>
+	  		 				<td>出发日期</td>
+	  		 				<td>起飞时间</td>
+	  		 				<td>到达时间</td>
+	  		 				<td>票价</td>
+	  		 				<td>机票类型</td>
+	  		 				<td>所属公司</td>
+	  		 				<td>航班号</td>
+	  		 				<td>备注</td>
+	  		 			</tr>
+	  		 		</thead>
+	  		 		<tbody id="t1"></tbody>
+	  		 	</table>
+	  		 </div>
+	  		 <div class="panel-footer">
+				<a href="insertTickets.html">新增航班信息</a>
+				&ensp;
+				&ensp;
+				&ensp;
+				&ensp;
+				<a href="showUsers.html">查看用户信息信息</a>
+      </div>
+  		</div>
+  </div>
+</body>
+</html>

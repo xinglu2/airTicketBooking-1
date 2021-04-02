@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>插入机票信息</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <script src="../myjs/ajax.js"></script>
+  <style type="text/css">
+    .form-group{
+      margin: 10px;
+    }
+  </style>
+  <script>
+    window.onload = function(){
+      var oSubmit = document.getElementById("submit");
+      var aInput = document.getElementsByTagName("input");
+      oSubmit.onclick = function(){
+        $ajax({
+        method:"post",
+        url:"insertTickets.php",
+        data:{
+          出发地:aInput[0].value,
+          目的地:aInput[1].value,
+          出发日期:aInput[2].value,
+          起飞时间:aInput[3].value,
+          到达时间:aInput[4].value,
+          票价:aInput[5].value,
+          机票类型:aInput[6].value,
+          所属公司:aInput[7].value,
+          航班号:aInput[8].value,
+          备注:aInput[9].value
+        },
+        success:function(result){
+          var obj = JSON.parse(result);
+          alert(obj.message);
+        },
+        error:function(msg){
+          alert(msg);
+        }
+      })
+    }
+  }
+      
+  </script>
+</head>
+
+<body style="background-image:url(../imgs/biaoge.jpg);background-repeat:no-repeat;background-attachment:fixed;background-size:cover">
+  <div class="container">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h2>新增航班信息</h2>
+      </div>
+      <div class="panel-body">
+        <div class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">出发地：</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="出发地" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">目的地：</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="目的地" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">出发日期：</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="出发日期" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">起飞时间：</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="起飞时间" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">到达时间：</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="到达时间" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">票价：</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="票价" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">机票类型：</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="机票类型" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">所属公司：</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="所属公司" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">航班号：</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="航班号" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">备注：</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="备注" />
+            </div>
+          </div>
+          <div class="from-group">
+            <button id="submit" class="btn btn-primary form-control">提交航班信息</button>
+          </div>
+      </div>
+      <div class="panel-footer">
+        <a href="showTickets.html">查看航班信息</a>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+</html>

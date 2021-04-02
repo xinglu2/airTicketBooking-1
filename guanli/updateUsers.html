@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>修改用户信息</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <style>
+    #update{
+      width: 400px;
+      margin: 150px auto;
+    }
+    #alert_info{
+      margin: 2px;
+      padding: 2px;
+      text-align: center;
+      margin-bottom: 10px;
+      /* 不为被隐藏的对象保留其物理空间 */
+      display: none;
+    }
+  </style>
+  <script src="../myjs/ajax.js"></script>
+  <script>
+    window.onload = function(){
+      var oBtn = document.getElementById("btn1");
+      var aInput = document.getElementsByTagName("input");
+      var oAlert = document.getElementById("alert_info");
+// 给提交按钮添加点击事件
+      oBtn.onclick = function(){
+        $ajax({
+          method:"post",
+          url:"submitUsers.php",
+          data:{
+            username:aInput[0].value,
+            password:aInput[1].value,
+            id:aInput[2].value
+          },
+          success:function(result){
+            var obj = JSON.parse(result);
+            // console.log(obj);
+            if(obj.code){
+              oAlert.className = 'alert alert-danger';
+            }else{
+              oAlert.className = 'alert alert-success';
+              setTimeout(function(){
+                location.href = "showUsers.html";
+              },2000);
+            }
+            oAlert.style.display = "block";
+            oAlert.innerHTML = obj.message;
+          },
+          error:function(msg){
+            alert(msg);
+          }
+        })
+      }
+      var id = valueByName(location.search,"id");
+      $ajax({
+        method:"get",
+        url:"updataUsers.php",
+        data:{  
+          id:id
+        },
+        success:function(result){
+          // alert(result);
+          var obj = JSON.parse(result);
+          if(!obj.code){
+            var row = JSON.parse(obj.message);
+            aInput[0].value = row.username;
+            aInput[1].value = row.password;
+            aInput[2].value = row.id;
+          }
+        },
+        error:function(msg){
+          // alert(msg);
+        }
+
+      })
+    }
+
+    //封装函数，search是要查询的字符串，第二个是要查询的键
+    function  valueByName(search,name) {
+      var start = search.indexOf(name+"=");
+      if(start == -1){
+        return null;
+      }else{
+        var end = search.indexOf("&",start);
+        if(end == -1){
+          end =search.length;
+        }
+        //提取想要的键值对
+        var str = search.substring(start,end);
+        // 通过“=”进行字符串分割
+        var arr = str.split("=");
+        return arr[1];
+      }
+    }
+  </script>
+</head>
+
+<body style="background-image:url(../imgs/2.jpg);background-repeat:no-repeat;background-attachment:fixed;background-size:cover">
+  <div class="container">
+    <div class="panel panel-primary" id="update">
+      <div class="panel-heading">
+        修改用户数据
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label for="username" >用户名</label>
+          <input type="text" name="username" class="form-control" id="">
+        </div>
+        <div class="form-group">
+          <label for="password" >密码</label>
+          <input type="text" name="password" class="form-control" id="">
+        </div>
+        <div class="form-group">
+          <!-- 隐藏表单 -->
+          <input type="hidden" name="id" class="form-control" id="">
+        </div>
+        <div class="alert alert-danger" role="alert" id="alert_info">xxx</div>
+        <a href="showUsers.html">查看用户列表</a>
+        <button class="btn btn-primary pull-right" id="btn1">提交</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>支付</title>
+  <style>
+    div {
+      margin-top: 150px;
+    }
+  </style>
+  <script src="../myjs/ajax.js"></script>
+  <script>
+    var ID1 = valueByName(location.search, "ID");
+    function valueByName(search, name) {
+      var start = search.indexOf(name + "=");
+      if (start == -1) {
+        return null;
+      } else {
+        var end = search.indexOf("&", start);
+        if (end == -1) {
+          end = search.length;
+        }
+        //提取想要的键值对
+        var str = search.substring(start, end);
+        // 通过“=”进行字符串分割
+        var arr = str.split("=");
+        return arr[1];
+      }
+    }
+    $ajax({
+      method: "get",
+      url: "money.php",
+      data: {
+        ID: ID1
+      },
+      success: function (result) {
+        var obj = JSON.parse(result);
+        if (!obj.code) {
+          var row = JSON.parse(obj.message);
+          str = `您需支付的价格为<b style = "color:rgb(180, 34, 34); font-size:45px">${row.票价}</b>元`;
+          myh.innerHTML = str;
+        }
+      },
+      error: function (msg) {
+        // alert(msg);
+      }
+
+    })
+
+  </script>
+</head>
+
+<body
+  style="background-image:url(../imgs/biaoge.jpg);background-repeat:no-repeat;background-attachment:fixed;background-size:cover">
+  <center>
+    <div class="container">
+      <div class="panel-body">
+        <img width="400px" src="../imgs/money.png" alt="支付码">
+      </div>
+    </div>
+    <br>
+
+    <span id="myh" style="color: rgb(43, 41, 41); font-size: 40px;"></span>
+  </center>
+</body>
+
+</html>

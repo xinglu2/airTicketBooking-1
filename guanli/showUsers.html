@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>查看用户信息</title>
+  <script src="../myjs/ajax.js"></script>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <script src="./time.js"></script>
+  <script>
+    window.onload = function () {
+      var oBtn = document.getElementById("btn1");
+      var oT1 = document.getElementById("t1");
+      oBtn.onclick = function () {
+        $ajax({
+          method: "get",
+          url: "showUsers.php",
+          success: function (result) {
+            // alert(result);
+            var arr = JSON.parse(result);
+            var str = ``;
+            for (var i = 0; i < arr.length; i++) {
+              str += `<tr>
+                        <td>${arr[i].id}</td>
+                        <td>${arr[i].username}</td>
+                        <td>${arr[i].password}</td>
+                        <td>${showTime(Number(arr[i].create_time))}</td>
+                        <td id="${arr[i].id}">
+                          <a href="#">删除</a>
+                          /
+                          <a href="updateUsers.html?id=${arr[i].id}">修改</a>
+                      </td>
+                    </tr>`;
+            }
+            oT1.innerHTML = str;
+          },
+          error: function (msg) {
+            alert(msg);
+          }
+        })
+      }
+      // 给所有的删除按钮和修改按钮添加点击
+      //事件委托
+      oT1.onclick = function(ev){
+        var e = ev||window.event;
+        var target = e.target||window.event.srcElement;
+        if(target.nodeName.toLowerCase()=="a" && target.innerHTML=="删除"){
+          // alert(target.innerHTML);
+          // 拿到当前要删除的数据id
+          var id = target.parentNode.id;
+            $ajax({
+              method:"get",
+              url:"deleteUser.php",
+              data:{
+                id: id
+              },
+              success:function(result){
+                var obj = JSON.parse(result);
+                if(!obj.code){
+                  oT1.removeChild(target.parentNode.parentNode);
+                }else{
+                  alert(obj.message);
+                }
+              },
+              error:function(msg){
+                alert(msg);
+              }
+            })
+            return false;
+
+        }
+      }
+    }
+  </script>
+</head>
+
+<body style="background-image:url(../imgs/1.jpg);background-repeat:no-repeat;background-attachment:fixed;background-size:cover">
+  <div class="container">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h2>获取用户列表</h2>
+      </div>
+      <div class="panel-body">
+        <button class="btn btn-success" id="btn1">获取用户数据</button>
+        <br /><br />
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <td>用户id</td>
+              <td>用户名</td>
+              <td>密码</td>
+              <td>注册时间</td>
+              <td>操作</td>
+            </tr>
+          </thead>
+          <tbody id="t1">
+
+          </tbody>
+        </table>
+      </div>
+      <div class="panel-footer">
+				<a href="showTickets.html">查看航班信息信息</a>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+
+</html>

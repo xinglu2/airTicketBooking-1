@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登陆</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <style>
+    #login {
+      width: 400px;
+      margin: 150px auto;
+    }
+
+    #alert_info {
+      margin: 2px;
+      padding: 2px;
+      text-align: center;
+      margin-bottom: 10px;
+      /* 不为被隐藏的对象保留其物理空间 */
+      display: none;
+    }
+  </style>
+  <script src="../myjs/ajax.js"></script>
+  <script>
+    window.onload = function () {
+      var oSubmit = document.getElementById("submit");
+      var aInput = document.getElementsByTagName("input");
+      var oAlert = document.getElementById("alert_info");
+      oSubmit.onclick = function () {
+        $ajax({
+          method: "post",
+          url: "chooseTicket.php",
+          data: {
+            出发地: aInput[0].value,
+            目的地: aInput[1].value,
+            出发日期: aInput[2].value,
+            机票类型: aInput[3].value
+          },
+          success: function (result) {
+              var obj = JSON.parse(result);
+              if (obj.code) {
+                oAlert.className = "alert alert-danger";
+              } else {
+                oAlert.className = 'alert alert-success';
+                setTimeout(function () {
+                  location.href = "wantticket.html";
+                }, 2000);
+              }
+              oAlert.style.display = "block";
+              oAlert.innerHTML = obj.message;
+            },
+            error: function (msg) {
+              alert(msg);
+          }
+        })
+      }
+    }
+  </script>
+</head>
+
+<body
+  style="background-image:url(../imgs/ca1349540923dd54ea2076a4d309b3de9d8248af.jpg);background-repeat:no-repeat;background-attachment:fixed;background-size:cover">
+  <div class="container">
+    <div class="panel panel-primary" id="login">
+      <div class="panel-heading">
+        请选票
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label for="startplace">出发地</label>
+          <input type="text" name="startplace" class="form-control" id="">
+        </div>
+        <div class="form-group">
+          <label for="overplace">目的地</label>
+          <input type="text" name="overplace" class="form-control" id="">
+        </div>
+        <div class="form-group">
+          <label for="startday">出发日期</label>
+          <input type="text" name="startday" class="form-control" id="">
+        </div>
+        <div class="form-group">
+          <label for="tickettype">机票类型</label>
+          <input type="text" name="tickettype" class="form-control" id="">
+        </div>
+        <div class="alert alert-danger" role="alert" id="alert_info">xxx</div>
+        <button class="btn btn-primary pull-right" id="submit"><a href="./wantticket.html" style="color: blanchedalmond;">确认</a></button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

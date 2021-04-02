@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>机票信息确认</title>
+  <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+  <script src="../myjs/ajax.js"></script>
+  <style>
+    a {
+      color: aliceblue;
+    }
+  </style>
+  <script>
+    window.onload = function () {
+      var oBtn = document.getElementById("a");
+      var oT1 = document.getElementById("t1");
+      var  ID = valueByName(location.search, "ID");
+      oBtn.onclick = function(){
+        setTimeout(function(){
+          location.href = "./money.html?ID="+ID;
+        },1000)
+      }
+      $ajax({
+        method: "get",
+        url: "buyTicket.php",
+        data: {
+          ID: ID
+        },
+        success: function (result) {
+          var obj = JSON.parse(result);
+          var str = ``;
+          if (!obj.code) {
+            var row = JSON.parse(obj.message);
+            str += `<tr>
+                      <td>${row.出发地}</td>
+                      <td>${row.目的地}</td>
+                      <td>${row.出发日期}</td>
+                      <td>${row.起飞时间}</td>
+                      <td>${row.到达时间}</td>
+                      <td>${row.票价}</td>
+                      <td>${row.机票类型}</td>
+                      <td>${row.所属公司}</td>
+                      <td>${row.航班号}</td>
+                      <td>${row.备注}</td>
+                    </tr> `;
+          }
+          oT1.innerHTML = str;
+        },
+        error: function (msg) {
+          // alert(msg);
+        }
+
+      })
+
+
+      //封装函数，search是要查询的字符串，第二个是要查询的键
+      function valueByName(search, name) {
+        var start = search.indexOf(name + "=");
+        if (start == -1) {
+          return null;
+        } else {
+          var end = search.indexOf("&", start);
+          if (end == -1) {
+            end = search.length;
+          }
+          //提取想要的键值对
+          var str = search.substring(start, end);
+          // 通过“=”进行字符串分割
+          var arr = str.split("=");
+          return arr[1];
+        }
+      }
+    }
+  </script>
+</head>
+
+<body
+  style="background-image:url(../imgs/biaoge.jpg);background-repeat:no-repeat;background-attachment:fixed;background-size:cover">
+  <div class="container">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">您所订购的机票信息</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed table-hover table-bordered">
+          <thead>
+            <tr>
+              <td>出发地</td>
+              <td>目的地</td>
+              <td>出发日期</td>
+              <td>起飞时间</td>
+              <td>到达时间</td>
+              <td>票价</td>
+              <td>机票类型</td>
+              <td>所属公司</td>
+              <td>航班号</td>
+              <td>备注</td>
+            </tr>
+          </thead>
+          <tbody id="t1">
+
+          </tbody>
+        </table>
+      </div>
+      <div class="panel-footer">
+        <a id="a"><button type="button" class="btn btn-primary btn-lg btn-block">确认</button></a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
